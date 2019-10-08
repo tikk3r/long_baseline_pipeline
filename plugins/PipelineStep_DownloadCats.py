@@ -16,15 +16,16 @@ from lofarpipe.support.data_map import DataProduct
 
 def grab_coo_MS(MS):
     """
-    Read the coordinates of a field from one MS corresponding to the selection given in the parameters
+    Read the coordinates of a field from one MS corresponding to the selection given in the parameters.
+
     Parameters
     ----------
     MS : str
         Full name (with path) to one MS of the field
     Returns
     -------
-    RA, Dec : float,float
-        coordinates of the field (RA, Dec in deg , J2000)
+    RA, Dec : float, float
+        Coordinates of the field (RA, Dec in deg , J2000)
     """
 
     # reading the coordinates ("position") from the MS
@@ -46,7 +47,17 @@ def grab_coo_MS(MS):
 
 def input2strlist_nomapfile(invar):
     """ from bin/download_IONEX.py
-    give the list of MSs from the list provided as a string
+    Give the list of MSs from the list provided as a string
+
+    Parameters
+    ----------
+    invar : str or list
+        List of Measurement Sets provided as a string.
+
+    Returns
+    -------
+    str_list : list
+        List of Measurement Sets as a list of strings.
     """
 
     str_list = None
@@ -62,18 +73,22 @@ def input2strlist_nomapfile(invar):
     return str_list
 
 def my_lotss_catalogue( ms_input, Radius=1.5, bright_limit_Jy=5., outfile='' ):
-
     """
-    Download the LoTSS skymodel for the target field
+    Download the LoTSS skymodel for the target field.
+
     Parameters
     ----------
     ms_input : str
-        String from the list (map) of the target MSs
+        String from the list (map) of the target MSs.
     Radius : float (default = 1.5)
-        Radius for the LOTSS cone search in degrees
-    
+        Radius for the LOTSS cone search in degrees.
+
+    Returns
+    -------
+    tb_final : astropy.io.votable.tree.VOTableFile
+        AstroPy VO Table containing relevant entries from LoTSS for the pointing.
     """
-    ## first check if the file already exists
+    # First check if the file already exists
     if os.path.isfile( outfile ):
 	print "LOTSS Skymodel for the target field exists on disk, reading in."
 	tb_final = Table.read( outfile, format='csv' )
@@ -112,9 +127,9 @@ def my_lotss_catalogue( ms_input, Radius=1.5, bright_limit_Jy=5., outfile='' ):
     return tb_final
 
 def my_lbcs_catalogue( ms_input, Radius=1.5, outfile='' ):
-
     """
-    Download the LBCS skymodel for the target field
+    Download the LBCS skymodel for the target field.
+
     Parameters
     ----------
     ms_input : str
@@ -122,6 +137,10 @@ def my_lbcs_catalogue( ms_input, Radius=1.5, outfile='' ):
     Radius : float (default = 1.5)
         Radius for the LOTSS cone search in degrees
     
+    Returns
+    -------
+    tb_out : astropy.io.votable.tree.VOTableFile
+        AstroPy VO Table containing the relevant LBCS entries for the field.
     """
     ## first check if the file already exists
     if os.path.isfile( outfile ):
@@ -181,6 +200,22 @@ def my_lbcs_catalogue( ms_input, Radius=1.5, outfile='' ):
     return tb_out
 
 def find_close_objs(lo, lb, tolerance=5.):
+    ''' Cross matches the local LoTSS and LBCS catalogues to find matching sources.
+
+    Parameters
+    ----------
+    lo : astropy.io.votable.tree.VOTableFile
+        The LoTSS input table for the field.
+    lb : astropy.io.votable.tree.VOTableFile
+        The LBCS input table for the field.
+    tolerance : float
+        Matching radius in arcsec.
+
+    Returns
+    -------
+    result : astropy.table.Table
+        The table with cross-matched entries between LoTSS and LCBS.
+    '''
 
     ## get the RA and DEC for both catalogues
     lotssRA= np.array(lo['RA'])
@@ -379,14 +414,22 @@ def plugin_main( args, **kwargs ):
 
 def is_resolved(Sint, Speak, rms):
     """ Determines if a source is resolved or unresolved.
+
     The calculation is presented in Shimwell et al. 2018 of the LOFAR DR1 paper splash.
-    
-    Args:
-        Sint (float or ndarray): integrated flux density.
-        Speak (float or ndarray): peak flux density.
-        rms (float or ndarray): local rms around the source.
-    Returns:
-        resolved (bool or ndarray): True if the source is resolved, False if not.
+
+    Parameters
+    ----------
+    Sint : float or ndarray
+        Integrated flux density.
+    Speak : float or ndarray
+        Peak flux density.
+    rms : float or ndarray
+        Local rms around the source.
+
+    Returns
+    -------
+    resolved : bool or ndarray
+        True if the source is resolved, False if not.
     """
     resolved = ((Sint / Speak) > 1.25 + 3.1 * (Speak / rms) ** (-0.53))
     return resolved
