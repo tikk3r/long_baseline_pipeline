@@ -5,10 +5,10 @@ python:
     - '3.6'
     - '2.7'
 before_install:
-   - sudo wget -O - http://neuro.debian.net/lists/xenial.us-ca.full | sudo tee /etc/apt/sources.list.d/neurodebian.sources.list
-   - wget -q -O - "https://keyserver.escomposlinux.org/pks/lookup?op=get&search=0xA5D32F012649A5A9" |tail -67| head -65 | sudo apt-key add -
-   - sudo apt-get update
-- sudo apt-get install -y singularity-container
+    - sudo wget -O - http://neuro.debian.net/lists/xenial.us-ca.full | sudo tee /etc/apt/sources.list.d/neurodebian.sources.list
+    - wget -q -O - "https://keyserver.escomposlinux.org/pks/lookup?op=get&search=0xA5D32F012649A5A9" |tail -67| head -65 | sudo apt-key add -
+    - sudo apt-get update
+    - sudo apt-get install -y singularity-container
 install:
     - wget -O lofar_sksp.sif https://lofar-webdav.grid.sara.nl/software/shub_mirror/tikk3r/lofar-grid-hpccloud/lofar_sksp.sif?action=show
 script:
