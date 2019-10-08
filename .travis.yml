@@ -1,17 +1,16 @@
 only:
-- new
+    - new
 language: python
 python:
-- '3.6'
-- '2.7'
+    - '3.6'
+    - '2.7'
+before_install:
+   - sudo wget -O - http://neuro.debian.net/lists/xenial.us-ca.full | sudo tee /etc/apt/sources.list.d/neurodebian.sources.list
+   - wget -q -O - "https://keyserver.escomposlinux.org/pks/lookup?op=get&search=0xA5D32F012649A5A9" |tail -67| head -65 | sudo apt-key add -
+   - sudo apt-get update
+- sudo apt-get install -y singularity-container
 install:
-- wget https://github.com/singularityware/singularity/releases/download/3.4.1/singularity-3.4.1.tar.gz
-- tar xvf singularity-3.4.1.tar.gz
-- cd singularity-3.4.1
-- ./configure --prefix=/usr/local
-- make
-- sudo make install
-- wget -O lofar_sksp.sif https://lofar-webdav.grid.sara.nl/software/shub_mirror/tikk3r/lofar-grid-hpccloud/lofar_sksp.sif?action=show
+    - wget -O lofar_sksp.sif https://lofar-webdav.grid.sara.nl/software/shub_mirror/tikk3r/lofar-grid-hpccloud/lofar_sksp.sif?action=show
 script:
     - git clone --branch new --single-branch https://github.com/tikk3r/long_baseline_pipeline.git
     - singularity exec lofar_sksp.sif python long_baseline_pipeline/bin/addIS_to_h5.py -h
