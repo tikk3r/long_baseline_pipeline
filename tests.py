@@ -16,15 +16,19 @@ class Test(unittest.TestCase):
     def test_py3_compatability(self):
         ''' Tests a scripts physical compatability with Python 3.
         '''
-        import ast, glob
+        import ast
+        import glob
+        import logging
         import fnmatch
         import os
+        logger = logging.getLogger('Unittest')
 
         matches = []
         for root, dirnames, filenames in os.walk('long_baseline_pipeline'):
             for filename in fnmatch.filter(filenames, '*.py'):
                 matches.append(os.path.join(root, filename))
         for filename in matches:
+            logger.info('Processing {:s}'.format(filename))
             with open(filename) as f:
                 contents = f.read()
                 try:
