@@ -13,3 +13,15 @@ class Test(unittest.TestCase):
         '''
         pass
     
+    def test_py3_compatability(filename):
+        ''' Tests a scripts physical compatability with Python 3.
+        '''
+        import ast
+        f = open(filename).read()
+        try:
+            ast.parset(f)
+        except SyntaxError:
+            return False
+
+if __name__ == '__main__':
+    unittest.main()
