@@ -13,4 +13,4 @@ install:
     - wget -O lofar_sksp.sif https://lofar-webdav.grid.sara.nl/software/shub_mirror/tikk3r/lofar-grid-hpccloud/lofar_sksp.sif?action=show
 script:
     - git clone --branch new --single-branch https://github.com/tikk3r/long_baseline_pipeline.git
-    - singularity exec lofar_sksp.sif python long_baseline_pipeline/bin/addIS_to_h5.py -h
+    - singularity exec lofar_sksp.sif python long_baseline_pipeline/tests.py
